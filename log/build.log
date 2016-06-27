@@ -1,0 +1,11 @@
+Fri Jun 24 17:16:05 PDT 2016 /Users/Adam/Documents/Research/RKQC/scripts/build param: -DBUILD_UNSTABLE=ON -DBUILD_EXAMPLES=ON -DBUILD_BINDINGS=OFF
+-DBUILD_BINDINGS=OFF -DBUILD_UNSTABLE=ON -DBUILD_EXAMPLES=ON
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/Adam/Documents/Research/RKQC/build
+[  4%] Built target revkit_unstable
+[ 95%] Built target revkit_core
+Scanning dependencies of target e007_multiplier
+[ 97%] Building CXX object examples/CMakeFiles/e007_multiplier.dir/e007_multiplier.cpp.o
+[100%] Linking CXX executable e007_multiplier
+[100%] Built target e007_multiplier

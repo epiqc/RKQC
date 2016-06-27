@@ -1,0 +1,12 @@
+In file included from /Users/Adam/Documents/Research/RKQC/src/examples/e007_multiplier.cpp:20:
+In file included from /Users/Adam/Documents/Research/RKQC/src/core/circuit.hpp:43:
+/usr/local/include/boost/signal.hpp:17:4: warning: "Boost.Signals is no longer being maintained and is now deprecated. Please switch to Boost.Signals2. To disable this warning message, define BOOST_SIGNALS_NO_DEPRECATION_WARNING." [-W#warnings]
+#  warning                  "Boost.Signals is no longer being maintained and is now deprecated. Please switch to Boost.Signals2. To disable this warning message, define BOOST_SIGNALS_NO_DEPRECATION_WARNING."
+   ^
+1 warning generated.
+ld: warning: directory not found for option '-L/Users/Adam/Documents/Research/RKQC/src/../libs/lib'
+ld: warning: directory not found for option '-L/Users/Adam/Documents/Research/RKQC/src/libs/lib'
+rm: revkit.py: No such file or directory
+rm: revkit_python.so: No such file or directory
+rm: revkitmath.py: No such file or directory
+rm: revkitui.py: No such file or directory

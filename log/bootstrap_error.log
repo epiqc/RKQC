@@ -1,0 +1,11 @@
+whereis: illegal option -- b
+usage: whereis program [...]
+whereis: illegal option -- b
+usage: whereis program [...]
+whereis: illegal option -- b
+usage: whereis program [...]
+whereis: illegal option -- b
+usage: whereis program [...]
+Cloning into 'installer'...
+/Users/Adam/Documents/Research/RKQC/scripts/bootstrap: line 203: ((: 342 CMake suite maintained and supported by Kitware (kitwarecom/cmake) < 280 : syntax error in expression (error token is "CMake suite maintained and supported by Kitware (kitwarecom/cmake) < 280 ")
+/Users/Adam/Documents/Research/RKQC/scripts/bootstrap: line 216: quote_error: command not found

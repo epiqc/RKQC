@@ -1,0 +1,10 @@
+/bin/bash rkqc > /dev/null 2> /dev/null
+
+#if [ "$?" == "0" ]
+#then
+#    echo "RKQC already in your PATH, remove old RKQC executable from path and source once more."
+#
+#else
+    export RKQC_PATH=$(pwd)
+    export PATH=$PATH:$RKQC_PATH
+#fi
