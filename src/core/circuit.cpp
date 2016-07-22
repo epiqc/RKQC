@@ -34,9 +34,6 @@ namespace revkit
   using boost::adaptors::indirected;
   using boost::adaptors::transformed;
 
-
-
-
   struct num_gates_visitor : public boost::static_visitor<unsigned>
   {
     unsigned operator()( const standard_circuit& circ ) const
@@ -1068,6 +1065,8 @@ namespace revkit
 
   circuit global_circuit = circuit( 0 );
   circuit qint::circ = global_circuit; 
+  bool LLVM_IR = false;
+  int registerCount = 1;
 
   qint::qint(void){
 	reg = std::vector<qint*>(1);
@@ -1232,7 +1231,10 @@ namespace revkit
     else title = "ancilla_11.txt";
     signals.open(title.c_str(), std::ios_base::app);
     if (signals.is_open()){
-        signals << "qubit " << *name << std::endl;
+        if (LLVM_IR)
+            signals << "  %" << *name << " = alloca i16, align 2\n";
+        else 
+            signals << "qbit " << *name << std::endl;
         signals.close();
     }
   }

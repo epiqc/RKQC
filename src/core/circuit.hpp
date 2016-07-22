@@ -46,9 +46,11 @@
 #include <core/gate.hpp>
 #include <core/meta/bus_collection.hpp>
 
+
+
+
 namespace revkit
 {
-
 
 
   /**
@@ -1201,6 +1203,8 @@ namespace revkit
 
 
   extern circuit global_circuit;
+  extern bool LLVM_IR;
+  extern int registerCount;
 
   class qint{
     public:

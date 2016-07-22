@@ -151,12 +151,32 @@ namespace revkit
 
   ////////////////////////////// create_ functions
 
+
+  void set_LLVM(bool setter){
+    LLVM_IR = setter;
+  }
+
   void create_toffoli( circuit& circ, const gate::line& control1, const gate::line& control2, const gate::line& target )
   {
     std::ofstream gates;
     gates.open("gates.txt", std::ios_base::app);
     if (gates.is_open()){
-        gates << "toffoli " << circ.lines_to_inputs.find( control1 )->second << "," << circ.lines_to_inputs.find( control2 )->second << "," << circ.lines_to_inputs.find( target )->second << std::endl;
+        std::string in1 = circ.lines_to_inputs.find( control1 )->second;
+        std::string in2 = circ.lines_to_inputs.find( control2 )->second;
+        std::string in3 = circ.lines_to_inputs.find( target )->second;
+        int count1 = registerCount++;
+        int count2 = registerCount++;
+        int count3 = registerCount++;
+        if( LLVM_IR ) {
+            gates << "  %" << count1 << " = load i16* %" << in1 << ", align 2\n"; 
+            gates << "  %" << count2 << " = load i16* %" << in2 << ", align 2\n"; 
+            gates << "  %" << count3 << " = load i16* %" << in3 << ", align 2\n"; 
+            gates << "  call void @llvm.Toffoli( i16 %" << count1 << ", i16 %" << count2 << ", i16 %" << count3 << ")\n";
+
+        }
+        else {
+            gates << "Toffoli (" << circ.lines_to_inputs.find( control1 )->second << "," << circ.lines_to_inputs.find( control2 )->second << "," << circ.lines_to_inputs.find( target )->second << ")" << std::endl;
+        }
         gates.close();
     }
   }
@@ -166,7 +186,7 @@ namespace revkit
     std::ofstream gates;
     gates.open("gates.txt", std::ios_base::app);
     if (gates.is_open()){
-        gates << "toffoli " << circ.lines_to_inputs.find( control1 )->second << "," << circ.lines_to_inputs.find( control2 )->second << "," << circ.lines_to_inputs.find( control3 )->second << "," << circ.lines_to_inputs.find( target )->second << std::endl;
+        gates << "Toffoli (" << circ.lines_to_inputs.find( control1 )->second << "," << circ.lines_to_inputs.find( control2 )->second << "," << circ.lines_to_inputs.find( control3 )->second << "," << circ.lines_to_inputs.find( target )->second << ")" << std::endl;
         gates.close();
     }
   }
@@ -200,7 +220,18 @@ namespace revkit
     std::ofstream gates;
     gates.open("gates.txt", std::ios_base::app);
     if (gates.is_open()){
-        gates << "cnot " << circ.lines_to_inputs.find( control )->second << "," << circ.lines_to_inputs.find( target )->second << std::endl; 
+        std::string in1 = circ.lines_to_inputs.find( control )->second;
+        std::string in2 = circ.lines_to_inputs.find( target )->second;
+        int count1 = registerCount++;
+        int count2 = registerCount++;
+        if( LLVM_IR ) {
+            gates << "  %" << count1 << " = load i16* %" << in1 << ", align 2\n"; 
+            gates << "  %" << count2 << " = load i16* %" << in2 << ", align 2\n"; 
+            gates << "  call void @llvm.CNOT( i16 %" << count1 << ", i16 %" << count2 << ")\n";
+
+        }
+        else
+            gates << "CNOT (" << circ.lines_to_inputs.find( control )->second << "," << circ.lines_to_inputs.find( target )->second << ")" << std::endl; 
         gates.close();
     }
   }
@@ -228,7 +259,14 @@ namespace revkit
     std::ofstream gates;
     gates.open("gates.txt", std::ios_base::app);
     if (gates.is_open()){
-        gates << "X " << circ.lines_to_inputs.find( target )->second << std::endl;
+        std::string in1 = circ.lines_to_inputs.find( target )->second;
+        int count1 = registerCount++;
+        if( LLVM_IR ) {
+            gates << "  %" << count1 << " = load i16* %" << in1 << ", align 2\n"; 
+            gates << "  call void @llvm.X( i16 %" << count1 << ")\n";
+        }
+        else 
+            gates << "X (" << circ.lines_to_inputs.find( target )->second << ")" << std::endl;
         gates.close();
     }
   }
@@ -323,6 +361,27 @@ namespace revkit
   }
 
 /*-------------- CTQG Functions -----------------*/
+
+  void assign_value_of_int_to_a( qint a, int b, int size)
+  {
+    zero_to_garbage ancilla(size);
+
+    int i = 0;
+    while (i < size) 
+    {
+      cnot( a[i], ancilla[i] );
+      cnot( ancilla[i], a[i] );
+      if( b == 0 ){
+        zero_to_zero anc;
+        cnot( anc, ancilla[i] );
+      }
+      else {
+        one_to_one anc;
+        cnot( anc, ancilla[i] );
+      }
+      i++;
+    }
+  }
 
   void assign_value_of_b_to_a( qint a, qint b, int size )
   {

@@ -399,8 +399,11 @@ namespace revkit
   void toffoli( qint control1, qint control2, qint target );
   void toffoli( qint control1, qint control2, qint control3, qint target );
 
+  void set_LLVM( bool setter );
+
 /*--------------- CTQG Functions --------------------------*/
 
+  void assign_value_of_int_to_a( qint a, int b, int size = 1 );
   void assign_value_of_b_to_a( qint a, qint b, int size = 1 );
   void assign_value_of_b_to_a( qint a, std::string binary_constant,  int size = 1 );
   void a_eq_a_plus_b( qint a, qint b, int size = 1);

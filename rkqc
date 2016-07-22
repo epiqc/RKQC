@@ -1,18 +1,27 @@
 #!/bin/bash
 
 ROOT=$(dirname $0)
+LOC=${PWD}
 
 name=${1%.cpp}
 filename="$name.cpp"
 
 echo "Compiling $name"
 
-rm src/examples/CMakeLists.txt
+if [ -f $name.cpp ]; then
+    cp *cpp $ROOT/src/examples
+elif [ -f rkqc.cpp ]; then
+    cp rkqc.cpp $ROOT/src/examples
+fi
 
-cat src/examples/CMAKE_HEADER > src/examples/CMakeLists.txt
-echo "add_test( $name revkit_core boost_system boost_filesystem boost_regex boost_signals )" >> src/examples/CMakeLists.txt 
+cd $ROOT/src/examples
 
-cd scripts/
+rm CMakeLists.txt
+
+cat CMAKE_HEADER > CMakeLists.txt
+echo "add_test( $name revkit_core boost_system boost_filesystem boost_regex boost_signals )" >> CMakeLists.txt 
+
+cd ../../scripts/
 
 echo "Building RKQC"
 
@@ -53,6 +62,13 @@ fi
 if [ -f gates.txt ]; then 
     cat gates.txt >> $qasm
     rm gates.txt
+fi
+
+cd $ROOT
+cd ../
+
+if [ -f rkqc/rkqc.qasm ]; then
+    mv rkqc/rkqc.qasm $LOC
 fi
 
 
